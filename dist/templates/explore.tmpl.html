@@ -1,0 +1,12 @@
+<md-button class="md-raised" ng-click="vm.open =!vm.open">Explore</md-button>
+<div layout="row" ng-if='vm.open'>
+    <md-menu ng-repeat="subject in vm.subjectAndTags" >
+        <md-button ng-mouseenter="$mdMenu.open()">
+            {{subject.subject}}
+        </md-button>
+        <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+            <md-menu-item ng-repeat="tags in subject.tags">
+                <md-button>{{tags}}</md-button>
+            </md-menu-item>
+        </md-menu-content></md-menu>
+</div>

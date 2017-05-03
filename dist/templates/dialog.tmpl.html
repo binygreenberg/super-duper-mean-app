@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<md-dialog aria-label="Mango (Fruit)">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Add</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+
+        <md-input-container class="md-icon-float md-block">
+            <!-- Use floating label instead of placeholder -->
+            <label>Title</label>
+            <input ng-model="dialog.post.title" type="text">
+        </md-input-container>
+
+        <md-input-container class="md-icon-float md-block">
+            <!-- Use floating label instead of placeholder -->
+            <label>Link</label>
+            <input ng-model="dialog.post.link" type="text">
+        </md-input-container>
+        <chips-input selected-tags="dialog.selectedTags"></chips-input>
+
+        <md-checkbox ng-model="dialog.post.video" aria-label="Checkbox 1">
+            Video: {{ dialog.post.video }}
+        </md-checkbox>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="dialog.submit()">
+                submit
+            </md-button>
+            <md-button ng-click="dialog.closeDialog()">
+                close
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+</html>
