@@ -23,7 +23,6 @@ function chipsInput(tagsService) {
             self.querySearch = function (query,arr) {
                 return query ? arr.filter( createFilterFor(query) ) : arr;
             }
-
             self.transformChip = function(chip) {
                 // If it is an object, it's already a known chip
                 if (angular.isObject(chip)) {

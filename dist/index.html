@@ -10,10 +10,11 @@
 <div ng-app='app'>
 
     <div ng-controller='appCtr as vm'>
+
         <chips-input selected-tags="vm.selectedTags"></chips-input>
         <md-button class="md-primary md-raised" ng-click="vm.searchForTut()">Search</md-button>
         <add-post></add-post>
-        <explore></explore>
+        <explore selected-tags="vm.selectedTags"></explore>
 
         <div ng-if="vm.isLoading" layout="row" layout-sm="column" layout-align="space-around">
             <md-progress-circular md-mode="indeterminate"></md-progress-circular>
