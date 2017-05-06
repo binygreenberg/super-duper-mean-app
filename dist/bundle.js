@@ -100,33 +100,12 @@ function appCtr ($http,$cookies) {
             });
     }
 
-    self.alreadyVoted = function(itemId){
-        return self.votedPosts.indexOf(itemId) !== -1;
-    }
-
     self.upperCaseFirst = function(arr){
         return arr.forEach(function (element) {
             element = element.charAt(0).toUpperCase() + element.slice(1);
         })
     }
 
-    self.upvote = function (postId) {
-        self.votedPosts.push(postId)
-        $cookies.putObject('voted', self.votedPosts);
-
-        $http.put("/api/post/"+postId).then(function (response) {
-                self.posts.some(function(currentValue){
-                    if (currentValue._id == postId){
-                        currentValue.points = response.data.points;
-                        return true;
-                    }
-                    return false;
-                });
-            },
-            function (e) {
-                console.log(e);
-            });
-    };
 }
 
 angular.module('app').controller('appCtr',appCtr);
@@ -156,7 +135,7 @@ function addPost($mdDialog,$http) {
                 self.selectedTags = [];
                 self.submit = function(){
                     self.post.tags = self.selectedTags.join('|').toLowerCase().split('|');
-                    $http.post("http://localhost:3000/api/post",self.post).then(function (response) {
+                    $http.post("/api/post",self.post).then(function (response) {
                             self.closeDialog();
                         },
                         function (e) {
@@ -240,7 +219,7 @@ function explore(tagsService) {
             selectedTags :'=selectedTags'
         },
         controller: function () {
-            self = this;
+            var self = this;
             self.subjectAndTags = tagsService.getSubjectAndTags();
 
             self.closeMenu = function () { $mdMenu.close();}
@@ -296,8 +275,58 @@ __webpack_require__(0);
 __webpack_require__(2);
 __webpack_require__(1);
 __webpack_require__(3);
+__webpack_require__(6);
 __webpack_require__(4);
 
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+/**
+ * Created by binyamin.greenberg on 5/5/17.
+ */
+function postList(tagsService,$cookies,$http) {
+    return {
+        restrict: 'E',
+        controllerAs: 'myVm',
+        templateUrl:'templates/posts_list.tmpl.html',
+        scope: {
+        },
+        bindToController: {
+            posts :'=',
+            votedPosts:'='
+        },
+        controller: function () {
+            var self = this;
+
+            self.upvote = function (postId) {
+                self.votedPosts.push(postId)
+                $cookies.putObject('voted', self.votedPosts);
+
+                $http.put("/api/post/"+postId).then(function (response) {
+                        self.posts.some(function(currentValue){
+                            if (currentValue._id == postId){
+                                currentValue.points = response.data.points;
+                                return true;
+                            }
+                            return false;
+                        });
+                    },
+                    function (e) {
+                        console.log(e);
+                    });
+            };
+
+            self.alreadyVoted = function(itemId){
+                return self.votedPosts.indexOf(itemId) !== -1;
+            }
+
+        }
+    }
+}
+
+angular.module('app').directive('postList',postList);
 
 /***/ })
 /******/ ]);

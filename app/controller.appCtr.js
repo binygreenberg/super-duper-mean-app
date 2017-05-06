@@ -28,33 +28,12 @@ function appCtr ($http,$cookies) {
             });
     }
 
-    self.alreadyVoted = function(itemId){
-        return self.votedPosts.indexOf(itemId) !== -1;
-    }
-
     self.upperCaseFirst = function(arr){
         return arr.forEach(function (element) {
             element = element.charAt(0).toUpperCase() + element.slice(1);
         })
     }
 
-    self.upvote = function (postId) {
-        self.votedPosts.push(postId)
-        $cookies.putObject('voted', self.votedPosts);
-
-        $http.put("/api/post/"+postId).then(function (response) {
-                self.posts.some(function(currentValue){
-                    if (currentValue._id == postId){
-                        currentValue.points = response.data.points;
-                        return true;
-                    }
-                    return false;
-                });
-            },
-            function (e) {
-                console.log(e);
-            });
-    };
 }
 
 angular.module('app').controller('appCtr',appCtr);

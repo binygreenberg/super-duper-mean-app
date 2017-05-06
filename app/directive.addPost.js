@@ -18,7 +18,7 @@ function addPost($mdDialog,$http) {
                 self.selectedTags = [];
                 self.submit = function(){
                     self.post.tags = self.selectedTags.join('|').toLowerCase().split('|');
-                    $http.post("http://localhost:3000/api/post",self.post).then(function (response) {
+                    $http.post("/api/post",self.post).then(function (response) {
                             self.closeDialog();
                         },
                         function (e) {

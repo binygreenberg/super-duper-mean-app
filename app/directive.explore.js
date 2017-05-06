@@ -9,7 +9,7 @@ function explore(tagsService) {
             selectedTags :'=selectedTags'
         },
         controller: function () {
-            self = this;
+            var self = this;
             self.subjectAndTags = tagsService.getSubjectAndTags();
 
             self.closeMenu = function () { $mdMenu.close();}
