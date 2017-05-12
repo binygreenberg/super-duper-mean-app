@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -136,11 +136,11 @@ function addPost($mdDialog,$http) {
                 self.submit = function(){
                     self.post.tags = self.selectedTags.join('|').toLowerCase().split('|');
                     $http.post("/api/post",self.post).then(function (response) {
-                            self.closeDialog();
                         },
                         function (e) {
                             console.log(e);
                         });
+                    self.closeDialog();
                 }
 
                 self.closeDialog = function() {
@@ -173,10 +173,9 @@ function chipsInput(tagsService) {
         templateUrl:'templates/chips.tmpl.html',
         controllerAs: 'vm',
         scope: {
+            selectedTags :'='
         },
-        bindToController: {
-            selectedTags :'=selectedTags'
-        },
+        bindToController: true,
         controller:function () {
             /**
              * Create filter function for a query string
@@ -199,6 +198,7 @@ function chipsInput(tagsService) {
                 }
             }
             self.tags = tagsService.getTags();
+
         }
     }
 }
@@ -208,7 +208,7 @@ angular.module('app').directive('chipsInput',chipsInput);
 /* 3 */
 /***/ (function(module, exports) {
 
-function explore(tagsService) {
+function explore(tagsService,$mdDialog) {
     return {
         restrict: 'E',
         controllerAs: 'myVm',
@@ -216,7 +216,7 @@ function explore(tagsService) {
         scope: {
         },
         bindToController: {
-            selectedTags :'=selectedTags'
+            selectedTags :'='
         },
         controller: function () {
             var self = this;
@@ -225,6 +225,32 @@ function explore(tagsService) {
             self.closeMenu = function () { $mdMenu.close();}
             self.addToInput = function(tag){
                 self.selectedTags.push(tag);
+            }
+            self.openRoadMap = function () {
+                $mdDialog.show({
+                    templateUrl: 'templates/roadmap.tmpl.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true,
+                    controller: function () {
+                        var urls = {'backEndUrl' : 'https://camo.githubusercontent.com/a69353cebac96bd2e82b45771d6edd32715ca0c3/68747470733a2f2f692e696d6775722e636f6d2f6d3956385a69562e706e67',
+                            'frontEndUrl' : 'https://camo.githubusercontent.com/93280354d6367052b6dbb71bbcd76c2ea81294c8/68747470733a2f2f692e696d6775722e636f6d2f3576465457634f2e706e67',
+                            'devOpsUrl' : 'https://camo.githubusercontent.com/3e4577550f330f8b507d7aff61d09c0fadd7d93f/687474703a2f2f692e696d6775722e636f6d2f694e4e495a7a542e706e67'}
+
+                        var self = this;
+
+                        self.currentUrl = urls['frontEndUrl'];
+
+                        self.setCurrentUrl = function (url) {
+                            self.currentUrl = urls[url];
+                        }
+
+                        self.close = function () {
+                            $mdDialog.cancel();
+                        }
+                    },
+                    controllerAs: 'dialog',
+                    bindToController: true,
+                });
             }
         }
     }
@@ -236,57 +262,10 @@ angular.module('app').directive('explore',explore);
 /* 4 */
 /***/ (function(module, exports) {
 
-function tagsService(){
-    var subjectAndTags =  [{
-            subject:"Front End",
-            tags:["Angular","React"]
-        },
-        {
-            subject:"Backend",
-            tags:["Django","Play"]
-        },
-        {
-            subject:"Cloud",
-            tags:["AWS","Herouku"]
-        }];
-    var self = this;
-
-    self.getSubjectAndTags = function(){
-        return subjectAndTags;
-    }
-
-    self.getTags = function(){
-        var arrOfTags = [];
-
-        subjectAndTags.forEach(function(element){
-            arrOfTags = arrOfTags.concat(element.tags);
-        });
-        return arrOfTags.sort();
-    }
-}
-angular.module('app').service('tagsService',tagsService);
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-angular.module('app', ['ngMaterial', 'ngCookies']);
-__webpack_require__(0);
-__webpack_require__(2);
-__webpack_require__(1);
-__webpack_require__(3);
-__webpack_require__(6);
-__webpack_require__(4);
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
 /**
  * Created by binyamin.greenberg on 5/5/17.
  */
-function postList(tagsService,$cookies,$http) {
+function postList($cookies,$http) {
     return {
         restrict: 'E',
         controllerAs: 'myVm',
@@ -327,6 +306,53 @@ function postList(tagsService,$cookies,$http) {
 }
 
 angular.module('app').directive('postList',postList);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+function tagsService(){
+    var subjectAndTags =  [{
+            subject:"Frontend Frameworks",
+            tags:["Angular","React","Vue.js","Ember JS","Preact","Inferno"]
+        },
+        {
+            subject:"Backend Framworks",
+            tags:["Node.js","Ruby on Rails","Django","Flask","Play","Laravel"]
+        },
+        {
+            subject:"Cloud",
+            tags:["AWS","Herouku"]
+        }];
+    var self = this;
+
+    self.getSubjectAndTags = function(){
+        return subjectAndTags;
+    }
+
+    self.getTags = function(){
+        var arrOfTags = [];
+
+        subjectAndTags.forEach(function(element){
+            arrOfTags = arrOfTags.concat(element.tags);
+        });
+        return arrOfTags.sort();
+    }
+}
+angular.module('app').service('tagsService',tagsService);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('app', ['ngMaterial', 'ngCookies']);
+__webpack_require__(0);
+__webpack_require__(2);
+__webpack_require__(1);
+__webpack_require__(3);
+__webpack_require__(4);
+__webpack_require__(5);
+
 
 /***/ })
 /******/ ]);

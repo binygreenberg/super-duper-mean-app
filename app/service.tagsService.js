@@ -1,11 +1,11 @@
 function tagsService(){
     var subjectAndTags =  [{
-            subject:"Front End",
-            tags:["Angular","React"]
+            subject:"Frontend Frameworks",
+            tags:["Angular","React","Vue.js","Ember JS","Preact","Inferno"]
         },
         {
-            subject:"Backend",
-            tags:["Django","Play"]
+            subject:"Backend Framworks",
+            tags:["Node.js","Ruby on Rails","Django","Flask","Play","Laravel"]
         },
         {
             subject:"Cloud",

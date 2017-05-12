@@ -43,18 +43,40 @@ router.route('/post')
     .post(function(req, res) {
 
         var post = new Post();      // create a new instance of the Post model
-        post.title = req.body.title;
         post.link = req.body.link;
         post.tags =req.body.tags;
         post.points = 0;
         post.video = req.body.video;
-        // save the post and check for errors
-        post.save(function(err) {
-            if (err)
-                res.send(err);
 
-            res.json({ message: 'A Post was created!' });
-        });
+        setTimeout(function() {
+            post.save(function (err) {
+                if (err)
+                    res.send(err);
+                res.json({message: post});
+            });
+        }, 1000)
+
+        // request(post.link, function(error, response, html){
+        //     if(!error){
+        //         var $ = cheerio.load(html);
+        //         post.title = $('title').text();
+        //     } else{
+        //         post.title = 'title to be defined'
+        //     }
+        //     post.save(function(err) {
+        //         if (err)
+        //             res.send(err);
+        //         res.json({ message: post });
+        //     });
+        // })
+
+        // save the post and check for errors
+        // post.save(function(err) {
+        //     if (err)
+        //         res.send(err);
+        //
+        //     res.json({ message: 'A Post was created!' });
+        // });
 
     })
 

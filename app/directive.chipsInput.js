@@ -4,10 +4,9 @@ function chipsInput(tagsService) {
         templateUrl:'templates/chips.tmpl.html',
         controllerAs: 'vm',
         scope: {
+            selectedTags :'='
         },
-        bindToController: {
-            selectedTags :'=selectedTags'
-        },
+        bindToController: true,
         controller:function () {
             /**
              * Create filter function for a query string
@@ -30,6 +29,7 @@ function chipsInput(tagsService) {
                 }
             }
             self.tags = tagsService.getTags();
+
         }
     }
 }

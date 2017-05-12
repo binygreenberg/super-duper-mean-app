@@ -19,11 +19,11 @@ function addPost($mdDialog,$http) {
                 self.submit = function(){
                     self.post.tags = self.selectedTags.join('|').toLowerCase().split('|');
                     $http.post("/api/post",self.post).then(function (response) {
-                            self.closeDialog();
                         },
                         function (e) {
                             console.log(e);
                         });
+                    self.closeDialog();
                 }
 
                 self.closeDialog = function() {
