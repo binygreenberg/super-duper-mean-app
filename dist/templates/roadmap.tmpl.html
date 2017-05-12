@@ -1,0 +1,30 @@
+<md-dialog aria-label="Mango (Fruit)">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Roadmap to becoming a web developer in 2017</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dialog.close()">
+                    <md-icon md-font-set="material-icons"> close </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <img  ng-style="{'max-width': '100%'}"
+                  ng-src="{{dialog.currentUrl}}">
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" layout-align="center center">
+            <md-button ng-click="dialog.setCurrentUrl('frontEndUrl')">
+                Front-end
+            </md-button>
+            <md-button ng-click="dialog.setCurrentUrl('backEndUrl')">
+                Back-end
+            </md-button>
+            <md-button ng-click="dialog.setCurrentUrl('devOpsUrl')">
+                DevOps
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
