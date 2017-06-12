@@ -4,7 +4,8 @@ function chipsInput(tagsService) {
         templateUrl:'templates/chips.tmpl.html',
         controllerAs: 'vm',
         scope: {
-            selectedTags :'='
+            selectedTags :'=',
+            notFoundStrategy:'='
         },
         bindToController: true,
         controller:function () {
@@ -29,6 +30,14 @@ function chipsInput(tagsService) {
                 }
             }
             self.tags = tagsService.getTags();
+
+            self.newTag = function (tag) {
+                //document.getElementById("input-1").blur();
+                // self.tags.push(tag);
+                self.selectedTags.push(tag);
+                self.searchText = "";
+            }
+
 
         }
     }

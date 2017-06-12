@@ -1,16 +1,33 @@
 function tagsService(){
     var subjectAndTags =  [{
             subject:"Frontend Frameworks",
-            tags:["Angular","React","Vue.js","Ember JS","Preact","Inferno"]
+            tags:["Angular","React","Vue.js","Ember JS"]
         },
         {
-            subject:"Backend Framworks",
-            tags:["Node.js","Ruby on Rails","Django","Flask","Play","Laravel"]
+            subject:"Frontend Tools",
+            tags:["Webpack","Gulp","Browserify","Grunt"]
+        },
+        {
+            subject:"Backend Frameworks",
+            tags:["Ruby on Rails","Django","Flask","Express,js","Meteor","Play","Laravel"]
         },
         {
             subject:"Cloud",
-            tags:["AWS","Herouku"]
-        }];
+            tags:["AWS (Amazon Web Services)","Herouku","Digital Ocean","Azure"]
+        },
+        {
+            subject:"Languages",
+            tags:["Python","Java","JavaScript","TypeScript","Ruby","PHP"]
+        },
+        {
+            subject:"Databases",
+            tags:["Redis","MongoDB","PostgreSQL","My SQL"]
+        },
+        {
+            subject:"Testing",
+            tags:["Redis","MongoDB","PostgreSQL","My SQL"]
+        },
+        ];
     var self = this;
 
     self.getSubjectAndTags = function(){

@@ -7,11 +7,43 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '621073064769605',
+            xfbml      : true,
+            version    : 'v2.9'
+        });
+        FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 <div ng-app='app' layout layout-align="center center">
 
     <div ng-controller='appCtr as vm' flex="50" layout="column" layout-padding>
 
-        <chips-input selected-tags="vm.selectedTags"></chips-input>
+        <md-card class="md-primary md-hue-1" ng-if="vm.openCard" md-theme="{{'default'}}" md-theme-watch>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Card with image</span>
+                </md-card-title-text>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.openCard  = !vm.openCard">
+                    <md-icon md-font-set="material-icons"> close </md-icon>
+                </md-button>
+            </md-card-title>
+            <md-button id="shareBtn" class="md-primary" ng-click="vm.facebookShare()">Share Dialog</md-button>
+
+        </md-card>
+
+        <chips-input selected-tags="vm.selectedTags" not-found-strategy="1"></chips-input>
         <div layout="row" layout-align="center center">
             <md-button class="md-primary md-raised" ng-click="vm.searchForTut()">Search</md-button>
             <md-button class="md-raised" ng-click="vm.openExplore =!vm.openExplore">Explore</md-button>
@@ -27,7 +59,6 @@
         <post-list posts="vm.posts" voted-posts="vm.votedPosts"></post-list>
     </div>
 </div>
-
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>

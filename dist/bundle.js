@@ -72,7 +72,15 @@
 
 function appCtr ($http,$cookies) {
     var self = this;
-
+    self.facebookShare = function () {
+        console.log('heeelo');
+        FB.ui({
+            method: 'share',
+            display: 'popup',
+            href: 'http://178.62.19.62:3000/',
+        }, function(response){});
+    };
+    self.openCard = true;
     self.selectedTags = [];
     self.votedPosts = $cookies.getObject('voted') || [];
     self.posts = [];
@@ -173,7 +181,8 @@ function chipsInput(tagsService) {
         templateUrl:'templates/chips.tmpl.html',
         controllerAs: 'vm',
         scope: {
-            selectedTags :'='
+            selectedTags :'=',
+            notFoundStrategy:'='
         },
         bindToController: true,
         controller:function () {
@@ -198,6 +207,14 @@ function chipsInput(tagsService) {
                 }
             }
             self.tags = tagsService.getTags();
+
+            self.newTag = function (tag) {
+                //document.getElementById("input-1").blur();
+                // self.tags.push(tag);
+                self.selectedTags.push(tag);
+                self.searchText = "";
+            }
+
 
         }
     }
@@ -314,16 +331,33 @@ angular.module('app').directive('postList',postList);
 function tagsService(){
     var subjectAndTags =  [{
             subject:"Frontend Frameworks",
-            tags:["Angular","React","Vue.js","Ember JS","Preact","Inferno"]
+            tags:["Angular","React","Vue.js","Ember JS"]
         },
         {
-            subject:"Backend Framworks",
-            tags:["Node.js","Ruby on Rails","Django","Flask","Play","Laravel"]
+            subject:"Frontend Tools",
+            tags:["Webpack","Gulp","Browserify","Grunt"]
+        },
+        {
+            subject:"Backend Frameworks",
+            tags:["Ruby on Rails","Django","Flask","Express,js","Meteor","Play","Laravel"]
         },
         {
             subject:"Cloud",
-            tags:["AWS","Herouku"]
-        }];
+            tags:["AWS (Amazon Web Services)","Herouku","Digital Ocean","Azure"]
+        },
+        {
+            subject:"Languages",
+            tags:["Python","Java","JavaScript","TypeScript","Ruby","PHP"]
+        },
+        {
+            subject:"Databases",
+            tags:["Redis","MongoDB","PostgreSQL","My SQL"]
+        },
+        {
+            subject:"Testing",
+            tags:["Redis","MongoDB","PostgreSQL","My SQL"]
+        },
+        ];
     var self = this;
 
     self.getSubjectAndTags = function(){

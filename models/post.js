@@ -11,8 +11,8 @@ var PostSchema   = new Schema({
     points: Number,
     video: Boolean,
     official: Boolean
-
 });
+
 
 module.exports = mongoose.model('Post', PostSchema);
 

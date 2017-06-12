@@ -1,13 +1,23 @@
-<md-chips ng-model="vm.selectedTags" md-autocomplete-snap="" md-transform-chip="vm.transformChip($chip)" md-require-match=''>
+<md-chips ng-model="vm.selectedTags" md-autocomplete-snap="width" md-transform-chip="vm.transformChip($chip)" md-require-match=''>
     <md-autocomplete
+            md-no-cache='true'
             md-search-text="vm.searchText"
             md-items="item in vm.querySearch(vm.searchText,vm.tags)"
             md-item-text="item.display"
             md-min-length="0"
             md-autoselect='true'
-            placeholder="Add a Tag">
+            placeholder="Enter Tags"
+            md-autofocus='false'>
         <md-item-template>
             <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item}}</span>
         </md-item-template>
+        <md-not-found>
+            <div ng-if="vm.notFoundStrategy == 1">
+                No tutorials tagged with "{{vm.searchText}}" exist. Be the first to add one!
+            </div>
+            <div ng-if="vm.notFoundStrategy == 2" ng-click="vm.newTag(vm.searchText)">
+                No Tag matching "{{vm.searchText}}" were found. Create a new one!
+            </div>
+        </md-not-found>
     </md-autocomplete>
 </md-chips>

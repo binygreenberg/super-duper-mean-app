@@ -1,6 +1,14 @@
 function appCtr ($http,$cookies) {
     var self = this;
-
+    self.facebookShare = function () {
+        console.log('heeelo');
+        FB.ui({
+            method: 'share',
+            display: 'popup',
+            href: 'http://178.62.19.62:3000/',
+        }, function(response){});
+    };
+    self.openCard = true;
     self.selectedTags = [];
     self.votedPosts = $cookies.getObject('voted') || [];
     self.posts = [];

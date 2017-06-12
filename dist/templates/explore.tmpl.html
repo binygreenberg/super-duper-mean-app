@@ -1,17 +1,19 @@
+<div layout="column" layout-align="center center">
 <div layout="row" layout-align="center center">
     <md-menu-bar>
     <md-menu ng-repeat="subject in myVm.subjectAndTags" >
         <md-button ng-click="$mdMenu.open()">
             {{subject.subject}}
         </md-button>
-        <md-menu-content width="4" ng-click="$mdMenu.close()">
+        <md-menu-content width="3" ng-click="$mdMenu.close()">
             <md-menu-item ng-repeat="tags in subject.tags">
                 <md-button ng-click="myVm.addToInput(tags)">{{tags}}</md-button>
             </md-menu-item>
         </md-menu-content>
     </md-menu>
     </md-menu-bar>
-    <md-button class="md-primary" ng-click="myVm.openRoadMap()">
-        RoadMap
-    </md-button>
+</div>
+<md-button class="md-primary" ng-click="myVm.openRoadMap()">
+    Web Developer RoadMap
+</md-button>
 </div>
