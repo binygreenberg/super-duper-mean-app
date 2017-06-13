@@ -292,17 +292,11 @@ function postList($cookies,$http) {
             votedPosts:'='
         },
         controller: function () {
-            var self = this;
-
-            self.firstLetterToUpper = function (chip) {
-                return chip.charAt(0).toUpperCase() + chip.slice(1);;
-            }
-
-            self.upvote = function (postId) {
+            var vote = function (postId,inc) {
                 self.votedPosts.push(postId)
                 $cookies.putObject('voted', self.votedPosts);
 
-                $http.put("/api/post/"+postId).then(function (response) {
+                $http.put("/api/post/"+postId,{"inc":inc}).then(function (response) {
                         self.posts.some(function(currentValue){
                             if (currentValue._id == postId){
                                 currentValue.points = response.data.points;
@@ -314,6 +308,19 @@ function postList($cookies,$http) {
                     function (e) {
                         console.log(e);
                     });
+            }
+
+            var self = this;
+
+            self.firstLetterToUpper = function (chip) {
+                return chip.charAt(0).toUpperCase() + chip.slice(1);;
+            }
+
+            self.upvote = function (postId) {
+                vote(postId,"up")
+            };
+            self.downvote = function (postId) {
+                vote(postId,"down")
             };
 
             self.alreadyVoted = function(itemId){

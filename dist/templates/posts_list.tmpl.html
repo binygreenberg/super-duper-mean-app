@@ -7,6 +7,11 @@
                 </md-button>
             </div>
             <div flex>{{item.points}}</div>
+            <div flex>
+                <md-button class="md-icon-button" ng-click="myVm.downvote(item._id)"  ng-disabled="myVm.alreadyVoted(item._id)">
+                    <md-icon md-font-set="material-icons"> arrow_drop_down </md-icon>
+                </md-button>
+            </div>
         </div>
         <div class="md-list-item-text" layout="column">
             <h3><a ng-href="{{item.link}}"> {{item.title}}</a></h3>
@@ -17,9 +22,8 @@
                 </md-chip-template>
             </md-chips>
         </div>
-        <div>
-            <md-tooltip md-direction="top">Insert Drive</md-tooltip>
-            <md-icon class="md-secondary" md-font-set="material-icons" ng-if="item.video"> ondemand_video </md-icon>
+        <div title="video toturial">
+            <md-icon class="md-secondary" md-font-set="material-icons" ng-if="item.video" > ondemand_video </md-icon>
         </div>
         <md-divider ng-if="!$last"></md-divider>
     </md-list-item>

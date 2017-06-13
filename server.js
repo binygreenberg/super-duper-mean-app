@@ -83,7 +83,13 @@ router.route('/post')
 router.route('/post/:id')
     .put(function(req,res){
         //ToDo add decrement points API
-        Post.findByIdAndUpdate(req.params.id, {$inc: { points: 1 }},function(err,post) {
+        var incPoints = 0;
+        if (req.body.inc == 'up') {
+            incPoints = 1;
+        } else {
+            incPoints = -1;
+        }
+        Post.findByIdAndUpdate(req.params.id, {$inc: { points: incPoints }},function(err,post) {
             if (err)
                 res.send(err);
             // cookies dealt with on client side
