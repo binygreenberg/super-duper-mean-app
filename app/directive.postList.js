@@ -15,6 +15,10 @@ function postList($cookies,$http) {
         controller: function () {
             var self = this;
 
+            self.firstLetterToUpper = function (chip) {
+                return chip.charAt(0).toUpperCase() + chip.slice(1);;
+            }
+
             self.upvote = function (postId) {
                 self.votedPosts.push(postId)
                 $cookies.putObject('voted', self.votedPosts);

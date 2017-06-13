@@ -11,7 +11,11 @@
         <div class="md-list-item-text" layout="column">
             <h3><a ng-href="{{item.link}}"> {{item.title}}</a></h3>
             <p>{{item.link}}</p>
-            <md-chips ng-model="item.tags" readonly="true"></md-chips>
+            <md-chips  ng-model="item.tags" readonly="true">
+                <md-chip-template>
+                    {{myVm.firstLetterToUpper($chip)}}
+                </md-chip-template>
+            </md-chips>
         </div>
         <div>
             <md-tooltip md-direction="top">Insert Drive</md-tooltip>

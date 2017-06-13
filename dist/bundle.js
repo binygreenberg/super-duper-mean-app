@@ -108,12 +108,6 @@ function appCtr ($http,$cookies) {
             });
     }
 
-    self.upperCaseFirst = function(arr){
-        return arr.forEach(function (element) {
-            element = element.charAt(0).toUpperCase() + element.slice(1);
-        })
-    }
-
 }
 
 angular.module('app').controller('appCtr',appCtr);
@@ -206,11 +200,15 @@ function chipsInput(tagsService) {
                     return chip;
                 }
             }
-            self.tags = tagsService.getTags();
+            tagsService.getTags().then(
+                function (response) {
+                    self.tags = response.data.map(function (tag) {
+                        return tag.charAt(0).toUpperCase() + tag.slice(1);
+                    }).sort();
+                }
+            );
 
             self.newTag = function (tag) {
-                //document.getElementById("input-1").blur();
-                // self.tags.push(tag);
                 self.selectedTags.push(tag);
                 self.searchText = "";
             }
@@ -296,6 +294,10 @@ function postList($cookies,$http) {
         controller: function () {
             var self = this;
 
+            self.firstLetterToUpper = function (chip) {
+                return chip.charAt(0).toUpperCase() + chip.slice(1);;
+            }
+
             self.upvote = function (postId) {
                 self.votedPosts.push(postId)
                 $cookies.putObject('voted', self.votedPosts);
@@ -328,7 +330,8 @@ angular.module('app').directive('postList',postList);
 /* 5 */
 /***/ (function(module, exports) {
 
-function tagsService(){
+function tagsService($http){
+
     var subjectAndTags =  [{
             subject:"Frontend Frameworks",
             tags:["Angular","React","Vue.js","Ember JS"]
@@ -364,13 +367,8 @@ function tagsService(){
         return subjectAndTags;
     }
 
-    self.getTags = function(){
-        var arrOfTags = [];
-
-        subjectAndTags.forEach(function(element){
-            arrOfTags = arrOfTags.concat(element.tags);
-        });
-        return arrOfTags.sort();
+    self.getTags = function() {
+            return $http.get('/api/tags',{ cache: true });
     }
 }
 angular.module('app').service('tagsService',tagsService);

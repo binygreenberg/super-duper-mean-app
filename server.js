@@ -48,36 +48,19 @@ router.route('/post')
         post.points = 0;
         post.video = req.body.video;
 
-        setTimeout(function() {
-            post.save(function (err) {
+        request(post.link, function(error, response, html){
+            if(!error){
+                var $ = cheerio.load(html);
+                post.title = $('title').text();
+            } else{
+                post.title = 'title to be defined'
+            }
+            post.save(function(err) {
                 if (err)
                     res.send(err);
-                res.json({message: post});
+                res.json({ message: post });
             });
-        }, 1000)
-
-        // request(post.link, function(error, response, html){
-        //     if(!error){
-        //         var $ = cheerio.load(html);
-        //         post.title = $('title').text();
-        //     } else{
-        //         post.title = 'title to be defined'
-        //     }
-        //     post.save(function(err) {
-        //         if (err)
-        //             res.send(err);
-        //         res.json({ message: post });
-        //     });
-        // })
-
-        // save the post and check for errors
-        // post.save(function(err) {
-        //     if (err)
-        //         res.send(err);
-        //
-        //     res.json({ message: 'A Post was created!' });
-        // });
-
+        })
     })
 
     .get(function(req, res) {
@@ -96,9 +79,10 @@ router.route('/post')
             });
         }
     });
-router.route('/post/:id')
 
+router.route('/post/:id')
     .put(function(req,res){
+        //ToDo add decrement points API
         Post.findByIdAndUpdate(req.params.id, {$inc: { points: 1 }},function(err,post) {
             if (err)
                 res.send(err);
@@ -120,6 +104,17 @@ router.route('/title/:link')
                 res.json(title);
             }
         })
+    });
+
+router.route('/tags')
+
+    .get(function (req,res){
+        Post.find().distinct('tags',function (err,tags) {
+            if(err)
+                res.send(err)
+            res.json(tags)
+        })
+        res.json
     });
 
 

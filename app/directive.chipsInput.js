@@ -29,11 +29,15 @@ function chipsInput(tagsService) {
                     return chip;
                 }
             }
-            self.tags = tagsService.getTags();
+            tagsService.getTags().then(
+                function (response) {
+                    self.tags = response.data.map(function (tag) {
+                        return tag.charAt(0).toUpperCase() + tag.slice(1);
+                    }).sort();
+                }
+            );
 
             self.newTag = function (tag) {
-                //document.getElementById("input-1").blur();
-                // self.tags.push(tag);
                 self.selectedTags.push(tag);
                 self.searchText = "";
             }

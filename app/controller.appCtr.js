@@ -36,12 +36,6 @@ function appCtr ($http,$cookies) {
             });
     }
 
-    self.upperCaseFirst = function(arr){
-        return arr.forEach(function (element) {
-            element = element.charAt(0).toUpperCase() + element.slice(1);
-        })
-    }
-
 }
 
 angular.module('app').controller('appCtr',appCtr);

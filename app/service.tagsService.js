@@ -1,4 +1,5 @@
-function tagsService(){
+function tagsService($http){
+
     var subjectAndTags =  [{
             subject:"Frontend Frameworks",
             tags:["Angular","React","Vue.js","Ember JS"]
@@ -34,13 +35,8 @@ function tagsService(){
         return subjectAndTags;
     }
 
-    self.getTags = function(){
-        var arrOfTags = [];
-
-        subjectAndTags.forEach(function(element){
-            arrOfTags = arrOfTags.concat(element.tags);
-        });
-        return arrOfTags.sort();
+    self.getTags = function() {
+            return $http.get('/api/tags',{ cache: true });
     }
 }
 angular.module('app').service('tagsService',tagsService);
