@@ -31,9 +31,7 @@ function chipsInput(tagsService) {
             }
             tagsService.getTags().then(
                 function (response) {
-                    self.tags = response.data.map(function (tag) {
-                        return tag.charAt(0).toUpperCase() + tag.slice(1);
-                    }).sort();
+                    self.tags = response;
                 }
             );
 

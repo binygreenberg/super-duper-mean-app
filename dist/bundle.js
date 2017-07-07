@@ -82,7 +82,6 @@ function appCtr ($http,$cookies) {
     };
     self.openCard = true;
     self.selectedTags = [];
-    self.votedPosts = $cookies.getObject('voted') || [];
     self.posts = [];
     self.isLoading = false;
 
@@ -202,9 +201,7 @@ function chipsInput(tagsService) {
             }
             tagsService.getTags().then(
                 function (response) {
-                    self.tags = response.data.map(function (tag) {
-                        return tag.charAt(0).toUpperCase() + tag.slice(1);
-                    }).sort();
+                    self.tags = response;
                 }
             );
 
@@ -289,12 +286,15 @@ function postList($cookies,$http) {
         },
         bindToController: {
             posts :'=',
-            votedPosts:'='
+            selectedTags:'='
         },
         controller: function () {
+            var votedPosts = $cookies.getObject('voted') || [];
+
             var vote = function (postId,inc) {
-                self.votedPosts.push(postId)
-                $cookies.putObject('voted', self.votedPosts);
+                votedPosts.push(postId)
+                //there is no push() for cookie must replace all array
+                $cookies.putObject('voted', votedPosts);
 
                 $http.put("/api/post/"+postId,{"inc":inc}).then(function (response) {
                         self.posts.some(function(currentValue){
@@ -313,7 +313,7 @@ function postList($cookies,$http) {
             var self = this;
 
             self.firstLetterToUpper = function (chip) {
-                return chip.charAt(0).toUpperCase() + chip.slice(1);;
+                return chip.charAt(0).toUpperCase() + chip.slice(1);
             }
 
             self.upvote = function (postId) {
@@ -324,9 +324,25 @@ function postList($cookies,$http) {
             };
 
             self.alreadyVoted = function(itemId){
-                return self.votedPosts.indexOf(itemId) !== -1;
+                return votedPosts.indexOf(itemId) !== -1;
             }
 
+            self.tagEqual = function (item) {
+                //show all posts
+                if (self.showExactTags) {
+                    var lowercaseSelectedTags = self.selectedTags.map(function (tag) {
+                        return tag.toLowerCase();
+                    }).sort();
+                    if (item.tags.sort().toString() == lowercaseSelectedTags.toString()) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (self.showOnlyVideo){
+                    return item.video;
+                }
+                return true;
+            }
         }
     }
 }
@@ -341,7 +357,7 @@ function tagsService($http){
 
     var subjectAndTags =  [{
             subject:"Frontend Frameworks",
-            tags:["Angular","React","Vue.js","Ember JS"]
+            tags:["AngularJS","Angular2","React","Vue.js","Ember"]
         },
         {
             subject:"Frontend Tools",
@@ -349,15 +365,15 @@ function tagsService($http){
         },
         {
             subject:"Backend Frameworks",
-            tags:["Ruby on Rails","Django","Flask","Express,js","Meteor","Play","Laravel"]
+            tags:["Node.js","Ruby on Rails","Django","Flask","Express","Meteor","Play","Laravel"]
         },
         {
             subject:"Cloud",
-            tags:["AWS (Amazon Web Services)","Herouku","Digital Ocean","Azure"]
+            tags:["AWS","Heroku","DigitalOcean","Azure","Google Cloud"]
         },
         {
             subject:"Languages",
-            tags:["Python","Java","JavaScript","TypeScript","Ruby","PHP"]
+            tags:["Python","Java","JavaScript","TypeScript","Ruby","PHP","CSS","Go"]
         },
         {
             subject:"Databases",
@@ -365,17 +381,37 @@ function tagsService($http){
         },
         {
             subject:"Testing",
-            tags:["Redis","MongoDB","PostgreSQL","My SQL"]
+            tags:["Jest","Mocha","Jasmine"]
+        },
+        {
+            subject:"Web Servers",
+            tags:["Jest","Mocha","Jasmine"]
         },
         ];
+    var specialCaseTags = ["TypeScript","AngularJS","PostgreSQL","CSS","Ruby on Rails","MongoDB","DigitalOcean","My SQL","AWS","PHP","Google Cloud"];
+    var specialCaseTagsLowercase = specialCaseTags.toString().toLowerCase().split(',');
     var self = this;
 
     self.getSubjectAndTags = function(){
         return subjectAndTags;
     }
 
+    //returns a promise
     self.getTags = function() {
-            return $http.get('/api/tags',{ cache: true });
+            return $http.get('/api/tags',{ cache: true }).then(function (response) {
+                return response.data.map(function (tag) {
+                    var index = specialCaseTagsLowercase.indexOf(tag);
+                    if ( index == -1) {
+                        return tag.charAt(0).toUpperCase() + tag.slice(1);
+                    } else {
+                        return specialCaseTags[index];
+                    }
+                }).sort();
+            });
+    }
+
+    self.getSpecialWords = function () {
+        return
     }
 }
 angular.module('app').service('tagsService',tagsService);

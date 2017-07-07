@@ -10,12 +10,15 @@ function postList($cookies,$http) {
         },
         bindToController: {
             posts :'=',
-            votedPosts:'='
+            selectedTags:'='
         },
         controller: function () {
+            var votedPosts = $cookies.getObject('voted') || [];
+
             var vote = function (postId,inc) {
-                self.votedPosts.push(postId)
-                $cookies.putObject('voted', self.votedPosts);
+                votedPosts.push(postId)
+                //there is no push() for cookie must replace all array
+                $cookies.putObject('voted', votedPosts);
 
                 $http.put("/api/post/"+postId,{"inc":inc}).then(function (response) {
                         self.posts.some(function(currentValue){
@@ -34,7 +37,7 @@ function postList($cookies,$http) {
             var self = this;
 
             self.firstLetterToUpper = function (chip) {
-                return chip.charAt(0).toUpperCase() + chip.slice(1);;
+                return chip.charAt(0).toUpperCase() + chip.slice(1);
             }
 
             self.upvote = function (postId) {
@@ -45,9 +48,25 @@ function postList($cookies,$http) {
             };
 
             self.alreadyVoted = function(itemId){
-                return self.votedPosts.indexOf(itemId) !== -1;
+                return votedPosts.indexOf(itemId) !== -1;
             }
 
+            self.tagEqual = function (item) {
+                //show all posts
+                if (self.showExactTags) {
+                    var lowercaseSelectedTags = self.selectedTags.map(function (tag) {
+                        return tag.toLowerCase();
+                    }).sort();
+                    if (item.tags.sort().toString() == lowercaseSelectedTags.toString()) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (self.showOnlyVideo){
+                    return item.video;
+                }
+                return true;
+            }
         }
     }
 }

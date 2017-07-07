@@ -1,5 +1,14 @@
-<md-list flex ng-hide="!myVm.posts.length">
-    <md-list-item class="md-3-line" ng-repeat="item in myVm.posts">
+<div ng-hide="!myVm.posts.length">
+<div>
+    <md-checkbox ng-model="myVm.showExactTags" aria-label="Show Exact Search 1">
+        Show Exact Search
+    </md-checkbox>
+    <md-checkbox ng-model="myVm.showOnlyVideo" aria-label="Checkbox 1">
+        Show Only Videos
+    </md-checkbox>
+</div>
+<md-list>
+    <md-list-item class="md-3-line" ng-repeat="item in myVm.posts | filter: myVm.tagEqual">
         <div layout="column" layout-align="space-around center">
             <div flex>
                 <md-button class="md-icon-button" ng-click="myVm.upvote(item._id)"  ng-disabled="myVm.alreadyVoted(item._id)">
@@ -28,3 +37,4 @@
         <md-divider ng-if="!$last"></md-divider>
     </md-list-item>
 </md-list>
+</div>

@@ -7,10 +7,10 @@
 
 var mongoose   = require('mongoose');
 var path = require('path');
-mongoose.connect('mongodb://localhost/test'); // connect to our database
+mongoose.connect('mongodb://localhost/tutorial_app'); // connect to our database
 
 var express = require('express');
-var cookieParser = require('cookie-parser')
+// var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser');
 var Post     = require('./models/post');
 var request = require('request');
@@ -21,7 +21,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist')));
-app.use(cookieParser())
+// app.use(cookieParser());
 
 var port = process.env.PORT || 3000;        // set our port
 

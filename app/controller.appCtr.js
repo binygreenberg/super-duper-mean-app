@@ -10,7 +10,6 @@ function appCtr ($http,$cookies) {
     };
     self.openCard = true;
     self.selectedTags = [];
-    self.votedPosts = $cookies.getObject('voted') || [];
     self.posts = [];
     self.isLoading = false;
 
