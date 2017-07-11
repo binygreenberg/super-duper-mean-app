@@ -1,7 +1,7 @@
 /**
  * Created by binyamin.greenberg on 5/5/17.
  */
-function postList($cookies,$http) {
+function postList($cookies,$http,tagsService) {
     return {
         restrict: 'E',
         controllerAs: 'myVm',
@@ -37,7 +37,7 @@ function postList($cookies,$http) {
             var self = this;
 
             self.firstLetterToUpper = function (chip) {
-                return chip.charAt(0).toUpperCase() + chip.slice(1);
+                return tagsService.specialCaseConversion(chip);
             }
 
             self.upvote = function (postId) {
@@ -71,4 +71,4 @@ function postList($cookies,$http) {
     }
 }
 
-angular.module('app').directive('postList',postList);
+angular.module('app').directive('postList',['$cookies','$http','tagsService',postList]);

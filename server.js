@@ -82,7 +82,6 @@ router.route('/post')
 
 router.route('/post/:id')
     .put(function(req,res){
-        //ToDo add decrement points API
         var incPoints = 0;
         if (req.body.inc == 'up') {
             incPoints = 1;
@@ -100,20 +99,20 @@ router.route('/post/:id')
         });
     });
 
-router.route('/title/:link')
-    .get(function (req,res) {
-        var url = decodeURIComponent(req.params.link);
-        request(url, function(error, response, html){
-            if(!error){
-                var $ = cheerio.load(html);
-                var title = $('title').text();
-                res.json(title);
-            }
-        })
-    });
+// depracate: post takes care of adding link
+// router.route('/title/:link')
+//     .get(function (req,res) {
+//         var url = decodeURIComponent(req.params.link);
+//         request(url, function(error, response, html){
+//             if(!error){
+//                 var $ = cheerio.load(html);
+//                 var title = $('title').text();
+//                 res.json(title);
+//             }
+//         })
+//     });
 
 router.route('/tags')
-
     .get(function (req,res){
         Post.find().distinct('tags',function (err,tags) {
             if(err)
@@ -128,8 +127,6 @@ router.route('/tags')
 router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });
 });
-
-// more routes for our API will happen here
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

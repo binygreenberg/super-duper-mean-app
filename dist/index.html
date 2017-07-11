@@ -3,28 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '621073064769605',
-            xfbml      : true,
-            version    : 'v2.9'
-        });
-        FB.AppEvents.logPageView();
-    };
-
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
 <div ng-app='app' layout layout-align="center center">
 
     <div ng-controller='appCtr as vm' flex="50" layout="column" layout-padding>
@@ -36,7 +19,7 @@
                 </md-card-title-text>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="vm.openCard  = !vm.openCard">
-                    <md-icon md-font-set="material-icons"> close </md-icon>
+                    <md-icon md-font-set="material-icons"> close</md-icon>
                 </md-button>
             </md-card-title>
             <md-button id="shareBtn" class="md-primary" ng-click="vm.facebookShare()">Share Dialog</md-button>
@@ -55,7 +38,6 @@
         <div ng-if="vm.isLoading" layout="row" layout-sm="column" layout-align="space-around">
             <md-progress-circular md-mode="indeterminate"></md-progress-circular>
         </div>
-
         <post-list posts="vm.posts" selected-tags="vm.selectedTags"></post-list>
     </div>
 </div>
@@ -66,4 +48,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-cookies.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
 <script src="bundle.js"></script>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '621073064769605',
+            xfbml: true,
+            version: 'v2.9'
+        });
+        FB.AppEvents.logPageView();
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 </html>

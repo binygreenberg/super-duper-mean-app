@@ -26,16 +26,26 @@ function tagsService($http){
         },
         {
             subject:"Testing",
-            tags:["Jest","Mocha","Jasmine"]
+            tags:["Jest","Mocha","Jasmine","Karma"]
         },
         {
             subject:"Web Servers",
-            tags:["Jest","Mocha","Jasmine"]
+            tags:["NGINX","Tomcat","Apache"]
         },
-        ];
+    ];
     var specialCaseTags = ["TypeScript","AngularJS","PostgreSQL","CSS","Ruby on Rails","MongoDB","DigitalOcean","My SQL","AWS","PHP","Google Cloud"];
     var specialCaseTagsLowercase = specialCaseTags.toString().toLowerCase().split(',');
+
     var self = this;
+
+    self.specialCaseConversion = function(tag){
+        var index = specialCaseTagsLowercase.indexOf(tag);
+        if ( index == -1) {
+            return tag.charAt(0).toUpperCase() + tag.slice(1);
+        } else {
+            return specialCaseTags[index];
+        }
+    }
 
     self.getSubjectAndTags = function(){
         return subjectAndTags;
@@ -44,19 +54,8 @@ function tagsService($http){
     //returns a promise
     self.getTags = function() {
             return $http.get('/api/tags',{ cache: true }).then(function (response) {
-                return response.data.map(function (tag) {
-                    var index = specialCaseTagsLowercase.indexOf(tag);
-                    if ( index == -1) {
-                        return tag.charAt(0).toUpperCase() + tag.slice(1);
-                    } else {
-                        return specialCaseTags[index];
-                    }
-                }).sort();
+                return response.data.map(self.specialCaseConversion).sort();
             });
     }
-
-    self.getSpecialWords = function () {
-        return
-    }
 }
-angular.module('app').service('tagsService',tagsService);
+angular.module('app').service('tagsService',['$http',tagsService]);

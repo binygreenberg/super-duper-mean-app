@@ -44,4 +44,4 @@ function chipsInput(tagsService) {
         }
     }
 }
-angular.module('app').directive('chipsInput',chipsInput);
+angular.module('app').directive('chipsInput',['tagsService',chipsInput]);

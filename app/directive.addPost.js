@@ -44,4 +44,4 @@ function addPost($mdDialog,$http) {
             }
         }
     }
-angular.module('app').directive('addPost',addPost);
+angular.module('app').directive('addPost',['$mdDialog','$http',addPost]);

@@ -46,4 +46,4 @@ function explore(tagsService,$mdDialog) {
     }
 }
 
-angular.module('app').directive('explore',explore);
+angular.module('app').directive('explore',['tagsService','$mdDialog',explore]);
