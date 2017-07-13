@@ -7,7 +7,7 @@ var Schema       = mongoose.Schema;
 var PostSchema   = new Schema({
     title: String,
     link: String,
-    tags:  [String],
+    tags:  { type: [String], index: true},
     points: Number,
     video: Boolean,
     official: Boolean

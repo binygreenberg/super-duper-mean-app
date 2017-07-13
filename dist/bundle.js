@@ -1,1 +1,451 @@
-!function(t){function e(n){if(o[n])return o[n].exports;var r=o[n]={i:n,l:!1,exports:{}};return t[n].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var o={};e.m=t,e.c=o,e.i=function(t){return t},e.d=function(t,o,n){e.o(t,o)||Object.defineProperty(t,o,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var o=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(o,"a",o),o},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=6)}([function(t,e){function o(t,e,o){var n=this;n.facebookShare=function(){console.log("heeelo"),FB.ui({method:"share",display:"popup",href:"http://178.62.19.62:3000/"},function(t){})},n.openCard=!0,n.selectedTags=[],n.posts=[],n.isLoading=!1;var r=function(){o.show(o.alert().parent(angular.element(document.body)).clickOutsideToClose(!0).title("This is an alert title").textContent("You can specify some description text in here.").ariaLabel("Alert Dialog Demo").ok("Got it!"))};n.searchForTut=function(){n.isLoading=!0;var e="/api/post";if(n.selectedTags.length>0){var o="?tags=";n.selectedTags.forEach(function(t,e){o+=e?"+"+t:t}),e+=o.toLowerCase()}t.get(e).then(function(t){n.isLoading=!1,t.data&&(n.posts=t.data.sort(function(t,e){return e.points-t.points})),0===t.data.length&&r()},function(t){console.log(t)})}}angular.module("app").controller("appCtr",["$http","$cookies","$mdDialog",o])},function(t,e){function o(t,e){return{restrict:"E",template:'<md-button class="md-raised" ng-click="vm.showAdvanced()">Add</md-button>',controllerAs:"vm",scope:{},bindToController:!0,controller:function(){var o=function(){var o=this;o.post={title:"",link:"",video:!1,official:!1,tags:[]},o.selectedTags=[],o.submit=function(){o.post.tags=o.selectedTags.join("|").toLowerCase().split("|"),e.post("/api/post",o.post).then(function(t){},function(t){console.log(t)}),o.closeDialog()},o.closeDialog=function(){t.hide()}};self=this,self.showAdvanced=function(){t.show({templateUrl:"templates/dialog.tmpl.html",parent:angular.element(document.body),clickOutsideToClose:!1,controller:o,controllerAs:"dialog",bindToController:!0})}}}}angular.module("app").directive("addPost",["$mdDialog","$http",o])},function(t,e){function o(t){return{restrict:"E",templateUrl:"templates/chips.tmpl.html",controllerAs:"vm",scope:{selectedTags:"=",notFoundStrategy:"="},bindToController:!0,controller:function(){var e=function(t){var e=angular.lowercase(t);return function(t){return 0===t.toLowerCase().indexOf(e)}},o=this;o.querySearch=function(t,o){return t?o.filter(e(t)):o},o.transformChip=function(t){if(angular.isObject(t))return t},t.getTags().then(function(t){o.tags=t}),o.newTag=function(t){o.selectedTags.push(t),o.searchText=""}}}}angular.module("app").directive("chipsInput",["tagsService",o])},function(t,e){function o(t,e){return{restrict:"E",controllerAs:"myVm",templateUrl:"templates/explore.tmpl.html",scope:{},bindToController:{selectedTags:"="},controller:function(){var o=this;o.subjectAndTags=t.getSubjectAndTags(),o.closeMenu=function(){$mdMenu.close()},o.addToInput=function(t){o.selectedTags.push(t)},o.openRoadMap=function(){e.show({templateUrl:"templates/roadmap.tmpl.html",parent:angular.element(document.body),clickOutsideToClose:!0,controller:function(){var t={backEndUrl:"https://camo.githubusercontent.com/a69353cebac96bd2e82b45771d6edd32715ca0c3/68747470733a2f2f692e696d6775722e636f6d2f6d3956385a69562e706e67",frontEndUrl:"https://camo.githubusercontent.com/93280354d6367052b6dbb71bbcd76c2ea81294c8/68747470733a2f2f692e696d6775722e636f6d2f3576465457634f2e706e67",devOpsUrl:"https://camo.githubusercontent.com/3e4577550f330f8b507d7aff61d09c0fadd7d93f/687474703a2f2f692e696d6775722e636f6d2f694e4e495a7a542e706e67"},o=this;o.currentUrl=t.frontEndUrl,o.setCurrentUrl=function(e){o.currentUrl=t[e]},o.close=function(){e.cancel()}},controllerAs:"dialog",bindToController:!0})}}}}angular.module("app").directive("explore",["tagsService","$mdDialog",o])},function(t,e){function o(t,e,o){return{restrict:"E",controllerAs:"myVm",templateUrl:"templates/posts_list.tmpl.html",scope:{},bindToController:{posts:"=",selectedTags:"="},controller:function(){var n=t.getObject("voted")||[],r=function(o,r){n.push(o),t.putObject("voted",n),e.put("/api/post/"+o,{inc:r}).then(function(t){a.posts.some(function(e){return e._id==o&&(e.points=t.data.points,!0)})},function(t){console.log(t)})},a=this;a.firstLetterToUpper=function(t){return o.specialCaseConversion(t)},a.upvote=function(t){r(t,"up")},a.downvote=function(t){r(t,"down")},a.alreadyVoted=function(t){return-1!==n.indexOf(t)},a.tagEqual=function(t){if(a.showExactTags){var e=a.selectedTags.map(function(t){return t.toLowerCase()}).sort();return t.tags.sort().toString()==e.toString()}return!a.showOnlyVideo||t.video}}}}angular.module("app").directive("postList",["$cookies","$http","tagsService",o])},function(t,e){function o(t){var e=[{subject:"Frontend Frameworks",tags:["AngularJS","Angular2","React","Vue.js","Ember"]},{subject:"Frontend Tools",tags:["Webpack","Gulp","Browserify","Grunt"]},{subject:"Backend Frameworks",tags:["Node.js","Ruby on Rails","Django","Flask","Express","Meteor","Play","Laravel"]},{subject:"Cloud",tags:["AWS","Heroku","DigitalOcean","Azure","Google Cloud"]},{subject:"Languages",tags:["Python","Java","JavaScript","TypeScript","Ruby","PHP","CSS","Go"]},{subject:"Databases",tags:["Redis","MongoDB","PostgreSQL","My SQL"]},{subject:"Testing",tags:["Jest","Mocha","Jasmine","Karma"]},{subject:"Web Servers",tags:["NGINX","Tomcat","Apache"]}],o=["TypeScript","AngularJS","PostgreSQL","CSS","Ruby on Rails","MongoDB","DigitalOcean","My SQL","AWS","PHP","Google Cloud"],n=o.toString().toLowerCase().split(","),r=this;r.specialCaseConversion=function(t){var e=n.indexOf(t);return-1==e?t.charAt(0).toUpperCase()+t.slice(1):o[e]},r.getSubjectAndTags=function(){return e},r.getTags=function(){return t.get("/api/tags",{cache:!0}).then(function(t){return t.data.map(r.specialCaseConversion).sort()})}}angular.module("app").service("tagsService",["$http",o])},function(t,e,o){angular.module("app",["ngMaterial","ngCookies"]),o(0),o(2),o(1),o(3),o(4),o(5)}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+function appCtr($http, $cookies, $mdDialog) {
+    var self = this;
+    self.facebookShare = function () {
+        console.log('heeelo');
+        FB.ui({
+            method: 'share',
+            display: 'popup',
+            href: 'http://178.62.19.62:3000/',
+        }, function (response) {
+        });
+    };
+    self.openCard = true;
+    self.selectedTags = [];
+    self.posts = [];
+    self.isLoading = false;
+
+    var showDialog = function () {
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.body))
+                .clickOutsideToClose(true)
+                .title('This is an alert title')
+                .textContent('You can specify some description text in here.')
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Got it!')
+        );
+    }
+
+    self.searchForTut = function () {
+        self.isLoading = true;
+        var url = "/api/post";
+        if (self.selectedTags.length > 0) {
+            var queryString = '?tags=';
+            self.selectedTags.forEach(function (tag, index) {
+                queryString += index ? '+' + tag : tag;
+            });
+            url += queryString.toLowerCase();
+        }
+
+        $http.get(url).then(function (response) {
+                self.isLoading = false;
+
+                if (response.data) {
+                    self.posts = response.data.sort(function (a, b) {
+                        return b.points - a.points;
+                    });
+                }
+                if (response.data.length === 0) {
+                    showDialog();
+                }
+            },
+            function (e) {
+                console.log(e);
+            });
+    }
+
+}
+
+angular.module('app').controller('appCtr', ['$http', '$cookies', '$mdDialog',appCtr]);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+function addPost($mdDialog,$http) {
+    return {
+        restrict: 'E',
+        template: '<md-button class="md-raised" ng-click="vm.showAdvanced()">Add</md-button>',
+        controllerAs: 'vm',
+        scope: {},
+        bindToController: true,
+        controller: function () {
+            var dialogCtr = function () {
+                var self = this;
+                self.post = {
+                    title : '',
+                    link : '',
+                    video : false,
+                    official : false,
+                    tags : []
+                }
+                self.selectedTags = [];
+                self.submit = function(){
+                    self.post.tags = self.selectedTags.join('|').toLowerCase().split('|');
+                    $http.post("/api/post",self.post).then(function (response) {
+                        },
+                        function (e) {
+                            console.log(e);
+                        });
+                    self.closeDialog();
+                }
+
+                self.closeDialog = function() {
+                    $mdDialog.hide();
+                }
+            }
+            self = this;
+            self.showAdvanced = function () {
+                $mdDialog.show({
+                    templateUrl: 'templates/dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: false,
+                    controller: dialogCtr,
+                    controllerAs: 'dialog',
+                    bindToController: true,
+                });
+            }
+            }
+        }
+    }
+angular.module('app').directive('addPost',['$mdDialog','$http',addPost]);
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+function chipsInput(tagsService) {
+    return {
+        restrict: 'E',
+        templateUrl:'templates/chips.tmpl.html',
+        controllerAs: 'vm',
+        scope: {
+            selectedTags :'=',
+            notFoundStrategy:'='
+        },
+        bindToController: true,
+        controller:function () {
+            /**
+             * Create filter function for a query string
+             */
+            var createFilterFor = function (query) {
+                var lowercaseQuery = angular.lowercase(query);
+                return function filterFn(tag) {
+                    return (tag.toLowerCase().indexOf(lowercaseQuery) === 0);
+                };
+            }
+
+            var self = this;
+            self.querySearch = function (query,arr) {
+                return query ? arr.filter( createFilterFor(query) ) : arr;
+            }
+            self.transformChip = function(chip) {
+                // If it is an object, it's already a known chip
+                if (angular.isObject(chip)) {
+                    return chip;
+                }
+            }
+            tagsService.getTags().then(
+                function (response) {
+                    self.tags = response;
+                }
+            );
+
+            self.newTag = function (tag) {
+                self.selectedTags.push(tag);
+                self.searchText = "";
+            }
+
+
+        }
+    }
+}
+angular.module('app').directive('chipsInput',['tagsService',chipsInput]);
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+function explore(tagsService,$mdDialog) {
+    return {
+        restrict: 'E',
+        controllerAs: 'myVm',
+        templateUrl:'templates/explore.tmpl.html',
+        scope: {
+        },
+        bindToController: {
+            selectedTags :'='
+        },
+        controller: function () {
+            var self = this;
+            self.subjectAndTags = tagsService.getSubjectAndTags();
+
+            self.closeMenu = function () { $mdMenu.close();}
+            self.addToInput = function(tag){
+                self.selectedTags.push(tag);
+            }
+            self.openRoadMap = function () {
+                $mdDialog.show({
+                    templateUrl: 'templates/roadmap.tmpl.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true,
+                    controller: function () {
+                        var urls = {'backEndUrl' : 'https://camo.githubusercontent.com/a69353cebac96bd2e82b45771d6edd32715ca0c3/68747470733a2f2f692e696d6775722e636f6d2f6d3956385a69562e706e67',
+                            'frontEndUrl' : 'https://camo.githubusercontent.com/93280354d6367052b6dbb71bbcd76c2ea81294c8/68747470733a2f2f692e696d6775722e636f6d2f3576465457634f2e706e67',
+                            'devOpsUrl' : 'https://camo.githubusercontent.com/3e4577550f330f8b507d7aff61d09c0fadd7d93f/687474703a2f2f692e696d6775722e636f6d2f694e4e495a7a542e706e67'}
+
+                        var self = this;
+
+                        self.currentUrl = urls['frontEndUrl'];
+
+                        self.setCurrentUrl = function (url) {
+                            self.currentUrl = urls[url];
+                        }
+
+                        self.close = function () {
+                            $mdDialog.cancel();
+                        }
+                    },
+                    controllerAs: 'dialog',
+                    bindToController: true,
+                });
+            }
+        }
+    }
+}
+
+angular.module('app').directive('explore',['tagsService','$mdDialog',explore]);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+/**
+ * Created by binyamin.greenberg on 5/5/17.
+ */
+function postList($cookies,$http,tagsService) {
+    return {
+        restrict: 'E',
+        controllerAs: 'myVm',
+        templateUrl:'templates/posts_list.tmpl.html',
+        scope: {
+        },
+        bindToController: {
+            posts :'=',
+            selectedTags:'='
+        },
+        controller: function () {
+            var votedPosts = $cookies.getObject('voted') || [];
+
+            var vote = function (postId,inc) {
+                votedPosts.push(postId)
+                //there is no push() for cookie must replace all array
+                $cookies.putObject('voted', votedPosts);
+
+                $http.put("/api/post/"+postId,{"inc":inc}).then(function (response) {
+                        self.posts.some(function(currentValue){
+                            if (currentValue._id == postId){
+                                currentValue.points = response.data.points;
+                                return true;
+                            }
+                            return false;
+                        });
+                    },
+                    function (e) {
+                        console.log(e);
+                    });
+            }
+
+            var self = this;
+
+            self.firstLetterToUpper = function (chip) {
+                return tagsService.specialCaseConversion(chip);
+            }
+
+            self.upvote = function (postId) {
+                vote(postId,"up")
+            };
+            self.downvote = function (postId) {
+                vote(postId,"down")
+            };
+
+            self.alreadyVoted = function(itemId){
+                return votedPosts.indexOf(itemId) !== -1;
+            }
+
+            self.tagEqual = function (item) {
+                //show all posts
+                if (self.showExactTags) {
+                    var lowercaseSelectedTags = self.selectedTags.map(function (tag) {
+                        return tag.toLowerCase();
+                    }).sort();
+                    if (item.tags.sort().toString() == lowercaseSelectedTags.toString()) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (self.showOnlyVideo){
+                    return item.video;
+                }
+                return true;
+            }
+        }
+    }
+}
+
+angular.module('app').directive('postList',['$cookies','$http','tagsService',postList]);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+function tagsService($http){
+
+    var subjectAndTags =  [{
+            subject:"Frontend Frameworks",
+            tags:["AngularJS","Angular2","React","Vue.js","Ember"]
+        },
+        {
+            subject:"Frontend Tools",
+            tags:["Webpack","Gulp","Browserify","Grunt"]
+        },
+        {
+            subject:"Backend Frameworks",
+            tags:["Node.js","Ruby on Rails","Django","Flask","Express","Meteor","Play","Laravel"]
+        },
+        {
+            subject:"Cloud",
+            tags:["AWS","Heroku","DigitalOcean","Azure","Google Cloud"]
+        },
+        {
+            subject:"Languages",
+            tags:["Python","Java","JavaScript","TypeScript","Ruby","PHP","CSS","Go"]
+        },
+        {
+            subject:"Databases",
+            tags:["Redis","MongoDB","PostgreSQL","My SQL"]
+        },
+        {
+            subject:"Testing",
+            tags:["Jest","Mocha","Jasmine","Karma"]
+        },
+        {
+            subject:"Web Servers",
+            tags:["NGINX","Tomcat","Apache"]
+        },
+    ];
+    var specialCaseTags = ["TypeScript","AngularJS","PostgreSQL","CSS","Ruby on Rails","MongoDB","DigitalOcean","My SQL","AWS","PHP","Google Cloud"];
+    var specialCaseTagsLowercase = specialCaseTags.toString().toLowerCase().split(',');
+
+    var self = this;
+
+    self.specialCaseConversion = function(tag){
+        var index = specialCaseTagsLowercase.indexOf(tag);
+        if ( index == -1) {
+            return tag.charAt(0).toUpperCase() + tag.slice(1);
+        } else {
+            return specialCaseTags[index];
+        }
+    }
+
+    self.getSubjectAndTags = function(){
+        return subjectAndTags;
+    }
+
+    //returns a promise
+    self.getTags = function() {
+            return $http.get('/api/tags',{ cache: true }).then(function (response) {
+                return response.data.map(self.specialCaseConversion).sort();
+            });
+    }
+}
+angular.module('app').service('tagsService',['$http',tagsService]);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('app', ['ngMaterial', 'ngCookies']);
+__webpack_require__(0);
+__webpack_require__(2);
+__webpack_require__(1);
+__webpack_require__(3);
+__webpack_require__(4);
+__webpack_require__(5);
+
+
+/***/ })
+/******/ ]);
