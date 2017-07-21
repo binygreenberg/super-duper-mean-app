@@ -20,8 +20,6 @@ var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'dist')));
-// app.use(cookieParser());
 
 var port = process.env.PORT || 3000;        // set our port
 
@@ -64,14 +62,14 @@ router.route('/post')
     })
 
     .get(function(req, res) {
-        if (req.query.tags != undefined) {
-            var tagsArr = req.query.tags.split(" ");
+        var tagsArr = req.query.tags;
+        if (tagsArr != undefined) {
             Post.find({"tags": {$all: tagsArr}}, function (err, posts) {
                 if (err)
                     res.send(err);
                 res.json(posts);
             });
-        } else {
+        } else { //if no query send all posts
             Post.find(function (err, posts) {
                 if (err)
                     res.send(err);

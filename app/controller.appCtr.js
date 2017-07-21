@@ -1,4 +1,4 @@
-function appCtr($http, $cookies, $mdDialog) {
+function appCtr($http, $cookies, $mdDialog,$location) {
     var self = this;
     self.facebookShare = function () {
         console.log('heeelo');
@@ -19,25 +19,17 @@ function appCtr($http, $cookies, $mdDialog) {
             $mdDialog.alert()
                 .parent(angular.element(document.body))
                 .clickOutsideToClose(true)
-                .title('This is an alert title')
-                .textContent('You can specify some description text in here.')
+                .title('No tutorial matching all the tags was found')
+                .textContent('Either limit the search or feel free to add one')
                 .ariaLabel('Alert Dialog Demo')
                 .ok('Got it!')
         );
     }
 
-    self.searchForTut = function () {
-        self.isLoading = true;
-        var url = "/api/post";
-        if (self.selectedTags.length > 0) {
-            var queryString = '?tags=';
-            self.selectedTags.forEach(function (tag, index) {
-                queryString += index ? '+' + tag : tag;
-            });
-            url += queryString.toLowerCase();
-        }
-
-        $http.get(url).then(function (response) {
+    var getPosts = function (arrOfTags) {
+        var config = {'params': {'tags': arrOfTags}};
+        var url = '/api/post'
+        $http.get(url, config).then(function (response) {
                 self.isLoading = false;
 
                 if (response.data) {
@@ -52,8 +44,34 @@ function appCtr($http, $cookies, $mdDialog) {
             function (e) {
                 console.log(e);
             });
+
+    }
+
+    self.searchForTut = function () {
+        if (self.selectedTags.length === 0){
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .parent(angular.element(document.body))
+                    .clickOutsideToClose(true)
+                    .textContent('Enter one or more tags')
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('Got it!')
+            );
+        }
+        self.isLoading = true;
+        var lowerCaseTags = self.selectedTags.map(function (tag) {
+            return tag.toLowerCase();
+        });
+        $location.search({'tags': lowerCaseTags});
+        getPosts(lowerCaseTags );
+    }
+
+    //if browser bar contains url with tags get them.
+    var tagsInBrowser = $location.search()['tags'];
+    if ($location.search() != undefined && tagsInBrowser) {
+        getPosts(tagsInBrowser);
     }
 
 }
 
-angular.module('app').controller('appCtr', ['$http', '$cookies', '$mdDialog',appCtr]);
+angular.module('app').controller('appCtr', ['$http','$cookies','$mdDialog','$location',appCtr]);

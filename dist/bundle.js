@@ -70,7 +70,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-function appCtr($http, $cookies, $mdDialog) {
+function appCtr($http, $cookies, $mdDialog,$location) {
     var self = this;
     self.facebookShare = function () {
         console.log('heeelo');
@@ -91,25 +91,17 @@ function appCtr($http, $cookies, $mdDialog) {
             $mdDialog.alert()
                 .parent(angular.element(document.body))
                 .clickOutsideToClose(true)
-                .title('This is an alert title')
-                .textContent('You can specify some description text in here.')
+                .title('No tutorial matching all the tags was found')
+                .textContent('Either limit the search or feel free to add one')
                 .ariaLabel('Alert Dialog Demo')
                 .ok('Got it!')
         );
     }
 
-    self.searchForTut = function () {
-        self.isLoading = true;
-        var url = "/api/post";
-        if (self.selectedTags.length > 0) {
-            var queryString = '?tags=';
-            self.selectedTags.forEach(function (tag, index) {
-                queryString += index ? '+' + tag : tag;
-            });
-            url += queryString.toLowerCase();
-        }
-
-        $http.get(url).then(function (response) {
+    var getPosts = function (arrOfTags) {
+        var config = {'params': {'tags': arrOfTags}};
+        var url = '/api/post'
+        $http.get(url, config).then(function (response) {
                 self.isLoading = false;
 
                 if (response.data) {
@@ -124,11 +116,37 @@ function appCtr($http, $cookies, $mdDialog) {
             function (e) {
                 console.log(e);
             });
+
+    }
+
+    self.searchForTut = function () {
+        if (self.selectedTags.length === 0){
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .parent(angular.element(document.body))
+                    .clickOutsideToClose(true)
+                    .textContent('Enter one or more tags')
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('Got it!')
+            );
+        }
+        self.isLoading = true;
+        var lowerCaseTags = self.selectedTags.map(function (tag) {
+            return tag.toLowerCase();
+        });
+        $location.search({'tags': lowerCaseTags});
+        getPosts(lowerCaseTags );
+    }
+
+    //if browser bar contains url with tags get them.
+    var tagsInBrowser = $location.search()['tags'];
+    if ($location.search() != undefined && tagsInBrowser) {
+        getPosts(tagsInBrowser);
     }
 
 }
 
-angular.module('app').controller('appCtr', ['$http', '$cookies', '$mdDialog',appCtr]);
+angular.module('app').controller('appCtr', ['$http','$cookies','$mdDialog','$location',appCtr]);
 
 
 /***/ }),
@@ -313,7 +331,7 @@ function postList($cookies,$http,tagsService) {
             var vote = function (postId,inc) {
                 votedPosts.push(postId)
                 //there is no push() for cookie must replace all array
-                $cookies.putObject('voted', votedPosts);
+                // $cookies.putObject('voted', votedPosts,{'domain':'localhost'});
 
                 $http.put("/api/post/"+postId,{"inc":inc}).then(function (response) {
                         self.posts.some(function(currentValue){
@@ -343,7 +361,8 @@ function postList($cookies,$http,tagsService) {
             };
 
             self.alreadyVoted = function(itemId){
-                return votedPosts.indexOf(itemId) !== -1;
+                return false;
+                //return votedPosts.indexOf(itemId) !== -1;
             }
 
             self.tagEqual = function (item) {
@@ -438,7 +457,10 @@ angular.module('app').service('tagsService',['$http',tagsService]);
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-angular.module('app', ['ngMaterial', 'ngCookies']);
+var app = angular.module('app', ['ngMaterial', 'ngCookies']);
+app.config(function ($locationProvider) {
+    $locationProvider.html5Mode(true);
+});
 __webpack_require__(0);
 __webpack_require__(2);
 __webpack_require__(1);

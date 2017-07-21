@@ -18,7 +18,7 @@ function postList($cookies,$http,tagsService) {
             var vote = function (postId,inc) {
                 votedPosts.push(postId)
                 //there is no push() for cookie must replace all array
-                $cookies.putObject('voted', votedPosts);
+                // $cookies.putObject('voted', votedPosts,{'domain':'localhost'});
 
                 $http.put("/api/post/"+postId,{"inc":inc}).then(function (response) {
                         self.posts.some(function(currentValue){
@@ -48,7 +48,8 @@ function postList($cookies,$http,tagsService) {
             };
 
             self.alreadyVoted = function(itemId){
-                return votedPosts.indexOf(itemId) !== -1;
+                return false;
+                //return votedPosts.indexOf(itemId) !== -1;
             }
 
             self.tagEqual = function (item) {

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="/">
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet"
@@ -12,25 +13,33 @@
 
     <div ng-controller='appCtr as vm' flex="50" layout="column" layout-padding>
 
-        <md-card class="md-primary md-hue-1" ng-if="vm.openCard" md-theme="{{'default'}}" md-theme-watch>
+        <md-card class="md-primary md-hue-1" ng-if="vm.openCard" md-theme="{{'default'}}" md-theme-watch ng-cloak>
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">Card with image</span>
+                    <span class="md-headline">WebDev Tutorials</span>
                 </md-card-title-text>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="vm.openCard  = !vm.openCard">
-                    <md-icon md-font-set="material-icons"> close</md-icon>
+                    <md-icon md-font-set="material-icons">close</md-icon>
                 </md-button>
             </md-card-title>
-            <md-button id="shareBtn" class="md-primary" ng-click="vm.facebookShare()">Share Dialog</md-button>
+            <md-card-content>
+                <p>
+                    <b>Search</b> for the top rated tutorials from around the web<br>
+                    <b>Upvote</b> the ones you love<br>
+                    <b>Add</b> your favourite ones so others can enjoy!<br>
+                </p>
+            </md-card-content>
+
+            <!--<md-button id="shareBtn" class="md-primary" ng-click="vm.facebookShare()">Share Dialog</md-button>-->
 
         </md-card>
 
         <chips-input selected-tags="vm.selectedTags" not-found-strategy="1"></chips-input>
         <div layout="row" layout-align="center center">
-            <md-button class="md-primary md-raised" ng-click="vm.searchForTut()">Search</md-button>
-            <md-button class="md-raised" ng-click="vm.openExplore =!vm.openExplore">Explore</md-button>
+            <md-button class="md-primary md-raised" ng-click="vm.searchForTut()" ng-cloak>Search</md-button>
             <add-post></add-post>
+            <md-button class="md-raised" ng-click="vm.openExplore =!vm.openExplore" ng-cloak>Explore</md-button>
         </div>
 
         <explore selected-tags="vm.selectedTags" ng-if='vm.openExplore'></explore>
