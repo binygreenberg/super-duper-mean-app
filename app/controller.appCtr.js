@@ -57,6 +57,7 @@ function appCtr($http, $cookies, $mdDialog,$location) {
                     .ariaLabel('Alert Dialog Demo')
                     .ok('Got it!')
             );
+            return;
         }
         self.isLoading = true;
         var lowerCaseTags = self.selectedTags.map(function (tag) {
