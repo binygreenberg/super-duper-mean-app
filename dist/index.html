@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width">
     <base href="/">
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,20 +9,20 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
-<body>
-<div ng-app='app' layout layout-align="center center">
+<body ng-app='app'>
+<div layout="row" layout-align="center center">
 
-    <div ng-controller='appCtr as vm' flex="50" layout="column" layout-padding>
+    <div ng-controller='appCtr as vm' flex="50" flex-md="60" flex-sm="80" flex-xs="90" layout="column" layout-padding>
 
         <md-card class="md-primary md-hue-1" ng-if="vm.openCard" md-theme="{{'default'}}" md-theme-watch ng-cloak>
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">WebDev Tutorials</span>
                 </md-card-title-text>
-                <span flex></span>
-                <md-button class="md-icon-button" ng-click="vm.openCard  = !vm.openCard">
-                    <md-icon md-font-set="material-icons">close</md-icon>
-                </md-button>
+                <!--<span flex></span>-->
+                <!--<md-button class="md-icon-button" ng-click="vm.openCard  = !vm.openCard">-->
+                    <!--<md-icon md-font-set="material-icons">close</md-icon>-->
+                <!--</md-button>-->
             </md-card-title>
             <md-card-content>
                 <p>
