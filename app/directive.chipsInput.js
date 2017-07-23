@@ -1,4 +1,4 @@
-function chipsInput(tagsService) {
+function chipsInput($timeout,tagsService) {
     return {
         restrict: 'E',
         templateUrl:'templates/chips.tmpl.html',
@@ -18,9 +18,14 @@ function chipsInput(tagsService) {
                     return (tag.toLowerCase().indexOf(lowercaseQuery) === 0);
                 };
             }
+            var unFocus = function(){ document.getElementsByTagName('md-autocomplete-wrap')[0].children[0].blur(); };
 
             var self = this;
             self.querySearch = function (query,arr) {
+                $timeout(function(){
+                    var mask = document.getElementsByClassName('md-scroll-mask')[0];
+                    if(mask)
+                        mask.addEventListener('click', unFocus, true); },250);
                 return query ? arr.filter( createFilterFor(query) ) : arr;
             }
             self.transformChip = function(chip) {
@@ -44,4 +49,4 @@ function chipsInput(tagsService) {
         }
     }
 }
-angular.module('app').directive('chipsInput',['tagsService',chipsInput]);
+angular.module('app').directive('chipsInput',['$timeout','tagsService',chipsInput]);

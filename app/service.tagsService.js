@@ -33,7 +33,7 @@ function tagsService($http){
             tags:["NGINX","Tomcat","Apache"]
         },
     ];
-    var specialCaseTags = ["TypeScript","AngularJS","PostgreSQL","CSS","Ruby on Rails","MongoDB","DigitalOcean","My SQL","AWS","PHP","Google Cloud"];
+    var specialCaseTags = ["NGINX","TypeScript","AngularJS","PostgreSQL","CSS","Ruby on Rails","MongoDB","DigitalOcean","My SQL","AWS","PHP","Google Cloud"];
     var specialCaseTagsLowercase = specialCaseTags.toString().toLowerCase().split(',');
 
     var self = this;
