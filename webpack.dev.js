@@ -15,6 +15,14 @@ module.exports = {
         filename:'bundle.js',
         path:path.resolve(__dirname,'dist')
     },
+    module: {
+        loaders: [
+            {
+                test: /\.html$/,
+                exclude: /node_modules/,
+                loader: 'raw-loader'
+            }],
+    },
     plugins:[
     ],
     watch: true,

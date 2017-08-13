@@ -8,32 +8,37 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        footer {background-color: #ccc;}
+    </style>
 </head>
 <body ng-app='app'>
 <div layout="row" layout-align="center center">
 
     <div ng-controller='appCtr as vm' flex="50" flex-md="60" flex-sm="80" flex-xs="90" layout="column" layout-padding>
 
-        <md-card class="md-primary md-hue-1" ng-if="vm.openCard" md-theme="{{'default'}}" md-theme-watch ng-cloak>
+        <md-card class="md-primary md-hue-1" ng-if="vm.openCard" md-theme="{{'default'}}" md-theme-watch ng-cloak >
+            <div layout="column" layout-align="center center">
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">WebDev Tutorials</span>
+                    <span class="md-headline"><b>Project WebDev Tutorials</b></span>
                 </md-card-title-text>
-                <!--<span flex></span>-->
-                <!--<md-button class="md-icon-button" ng-click="vm.openCard  = !vm.openCard">-->
-                    <!--<md-icon md-font-set="material-icons">close</md-icon>-->
-                <!--</md-button>-->
             </md-card-title>
             <md-card-content>
                 <p>
-                    <b>Search</b> for the top rated tutorials from around the web<br>
-                    <b>Upvote</b> the ones you love<br>
-                    <b>Add</b> your favourite ones so others can enjoy!<br>
+                    There are literally thousands of tutorials on the web for someone looking to learn about a web development topic.
+                    The goal of this site is to gather and rate these tutorials so you can:
+                    <ul>
+                    <li><b>Search</b> for the top rated tutorials from around the web<br></li>
+                    <li><b>Upvote</b> the ones you love<br></li>
+                    <li>And <b>Add</b> your favourite ones so others can enjoy!<br></li>
+                    </ul>
+                    Checkout more details about the project on <a href="https://github.com/binygreenberg/super-duper-mean-app">GitHub</a>
                 </p>
             </md-card-content>
 
             <!--<md-button id="shareBtn" class="md-primary" ng-click="vm.facebookShare()">Share Dialog</md-button>-->
-
+            </div>
         </md-card>
 
         <chips-input selected-tags="vm.selectedTags" not-found-strategy="1"></chips-input>
@@ -51,13 +56,13 @@
         <post-list posts="vm.posts" selected-tags="vm.selectedTags"></post-list>
     </div>
 </div>
-<a href="https://seal.beyondsecurity.com/vulnerability-scanner-verification/178.62.19.62"><img src="https://seal.beyondsecurity.com/verification-images/178.62.19.62/vulnerability-scanner-2.gif" alt="Website Security Test" border="0" /></a>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-cookies.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-cookies.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-messages.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
 <script src="bundle.js"></script>
 <script>
     window.fbAsyncInit = function () {

@@ -1,6 +1,6 @@
 <div flex="50" layout-align="center center">
 <md-dialog>
-    <form ng-cloak>
+    <form ng-cloak name="inputForm">
     <md-dialog-content layout="column">
         <div class="md-dialog-content">
             <p>
@@ -10,13 +10,14 @@
         <md-input-container class="md-icon-float md-block">
             <!-- Use floating label instead of placeholder -->
             <label>Link</label>
-            <input ng-model="dialog.post.link" type="text">
+            <input name="link" ng-model="dialog.post.link" type="text">
         </md-input-container>
-
         <chips-input selected-tags="dialog.selectedTags" not-found-strategy="2"></chips-input>
         </div>
     </md-dialog-content>
         <md-dialog-actions layout="row">
+            <div ng-show="true" style="color:red">Link and tags are required</div>
+
             <md-button ng-click="dialog.submit()">
                 submit
             </md-button>

@@ -97,18 +97,6 @@ router.route('/post/:id')
         });
     });
 
-// depracate: post takes care of adding link
-// router.route('/title/:link')
-//     .get(function (req,res) {
-//         var url = decodeURIComponent(req.params.link);
-//         request(url, function(error, response, html){
-//             if(!error){
-//                 var $ = cheerio.load(html);
-//                 var title = $('title').text();
-//                 res.json(title);
-//             }
-//         })
-//     });
 
 router.route('/tags')
     .get(function (req,res){

@@ -1,7 +1,7 @@
 /**
  * Created by binyamin.greenberg on 5/5/17.
  */
-function postList($cookies,$http,tagsService) {
+function postList($window,$http,tagsService) {
     return {
         restrict: 'E',
         controllerAs: 'myVm',
@@ -13,12 +13,12 @@ function postList($cookies,$http,tagsService) {
             selectedTags:'='
         },
         controller: function () {
-            var votedPosts = $cookies.getObject('voted') || [];
+            var votedPosts = JSON.parse($window.localStorage.getItem("voted")) || [];
 
             var vote = function (postId,inc) {
                 votedPosts.push(postId)
                 //there is no push() for cookie must replace all array
-                $cookies.putObject('voted', votedPosts,{'domain':'localhost'});
+                $window.localStorage['voted'] = JSON.stringify(votedPosts);
 
                 $http.put("/api/post/"+postId,{"inc":inc}).then(function (response) {
                         self.posts.some(function(currentValue){
@@ -71,4 +71,4 @@ function postList($cookies,$http,tagsService) {
     }
 }
 
-angular.module('app').directive('postList',['$cookies','$http','tagsService',postList]);
+angular.module('app').directive('postList',['$window','$http','tagsService',postList]);

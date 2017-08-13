@@ -17,6 +17,11 @@ function addPost($mdDialog,$http) {
                 }
                 self.selectedTags = [];
                 self.submit = function(){
+                    if (self.post.title,length === 0){
+                        return;
+                    } if (self.selectedTags.length === 0) {
+                        return;
+                    }
                     self.post.tags = self.selectedTags.join('|').toLowerCase().split('|');
                     $http.post("/api/post",self.post).then(function (response) {
                         },
@@ -33,7 +38,7 @@ function addPost($mdDialog,$http) {
             self = this;
             self.showAdvanced = function () {
                 $mdDialog.show({
-                    templateUrl: 'templates/dialog.tmpl.html',
+                    templateUrl: 'templates/add.tmpl.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose: false,
                     controller: dialogCtr,
