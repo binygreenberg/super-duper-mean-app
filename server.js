@@ -39,13 +39,11 @@ router.use(function(req, res, next) {
 router.route('/post')
 
     .post(function(req, res) {
-
         var post = new Post();      // create a new instance of the Post model
         post.link = req.body.link;
-        post.tags =req.body.tags;
+        post.tags = req.body.tags;
         post.points = 0;
         post.video = req.body.video;
-
         request(post.link, function(error, response, html){
             if(!error){
                 var $ = cheerio.load(html);
